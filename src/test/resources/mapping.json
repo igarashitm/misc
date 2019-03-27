@@ -1,0 +1,150 @@
+{
+  "AtlasMapping": {
+    "jsonType": "io.atlasmap.v2.AtlasMapping",
+    "dataSource": [
+      {
+        "jsonType": "io.atlasmap.xml.v2.XmlDataSource",
+        "id": "-LDhKZcV5Bf7EglrQl01",
+        "uri": "atlas:xml:-LDhKZcV5Bf7EglrQl01",
+        "dataSourceType": "SOURCE",
+        "xmlNamespaces": {
+          "xmlNamespace": []
+        }
+      },
+      {
+        "jsonType": "io.atlasmap.json.v2.JsonDataSource",
+        "id": "-LDhMttX5Bf7EglrQl01",
+        "uri": "atlas:json:-LDhMttX5Bf7EglrQl01",
+        "dataSourceType": "TARGET",
+        "template": null
+      }
+    ],
+    "mappings": {
+      "mapping": [
+        {
+          "jsonType": "io.atlasmap.v2.Collection",
+          "mappingType": "COLLECTION",
+          "collectionType": null,
+          "mappings": {
+            "mapping": [
+              {
+                "jsonType": "io.atlasmap.v2.Mapping",
+                "mappingType": "MAP",
+                "id": "mapping.970788",
+                "inputField": [
+                  {
+                    "jsonType": "io.atlasmap.xml.v2.XmlField",
+                    "name": "address",
+                    "path": "/customers/customer<>/address",
+                    "fieldType": "STRING",
+                    "docId": "-LDhKZcV5Bf7EglrQl01",
+                    "userCreated": false
+                  }
+                ],
+                "outputField": [
+                  {
+                    "jsonType": "io.atlasmap.json.v2.JsonField",
+                    "name": "address",
+                    "path": "/customers<>/address",
+                    "fieldType": "STRING",
+                    "docId": "-LDhMttX5Bf7EglrQl01",
+                    "userCreated": false
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "jsonType": "io.atlasmap.v2.Collection",
+          "mappingType": "COLLECTION",
+          "collectionType": null,
+          "mappings": {
+            "mapping": [
+              {
+                "jsonType": "io.atlasmap.v2.Mapping",
+                "mappingType": "MAP",
+                "id": "mapping.208278",
+                "inputField": [
+                  {
+                    "jsonType": "io.atlasmap.xml.v2.XmlField",
+                    "name": "id",
+                    "path": "/customers/customer<>/@id",
+                    "fieldType": "STRING",
+                    "docId": "-LDhKZcV5Bf7EglrQl01",
+                    "userCreated": false
+                  }
+                ],
+                "outputField": [
+                  {
+                    "jsonType": "io.atlasmap.json.v2.JsonField",
+                    "name": "id",
+                    "path": "/customers<>/id",
+                    "fieldType": "STRING",
+                    "docId": "-LDhMttX5Bf7EglrQl01",
+                    "userCreated": false
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "jsonType": "io.atlasmap.v2.Collection",
+          "mappingType": "COLLECTION",
+          "collectionType": null,
+          "mappings": {
+            "mapping": [
+              {
+                "jsonType": "io.atlasmap.v2.Mapping",
+                "mappingType": "SEPARATE",
+                "id": "mapping.139334",
+                "inputField": [
+                  {
+                    "jsonType": "io.atlasmap.xml.v2.XmlField",
+                    "name": "name",
+                    "path": "/customers/customer<>/name",
+                    "fieldType": "STRING",
+                    "docId": "-LDhKZcV5Bf7EglrQl01",
+                    "userCreated": false
+                  }
+                ],
+                "outputField": [
+                  {
+                    "jsonType": "io.atlasmap.json.v2.JsonField",
+                    "name": "firstName",
+                    "path": "/customers<>/firstName",
+                    "fieldType": "STRING",
+                    "docId": "-LDhMttX5Bf7EglrQl01",
+                    "userCreated": false,
+                    "index": 0
+                  },
+                  {
+                    "jsonType": "io.atlasmap.json.v2.JsonField",
+                    "name": "lastName",
+                    "path": "/customers<>/lastName",
+                    "fieldType": "STRING",
+                    "docId": "-LDhMttX5Bf7EglrQl01",
+                    "userCreated": false,
+                    "index": 1
+                  }
+                ],
+                "delimiter": "Space"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "name": "UI.345307",
+    "lookupTables": {
+      "lookupTable": []
+    },
+    "constants": {
+      "constant": []
+    },
+    "properties": {
+      "property": []
+    }
+  }
+}

@@ -1,0 +1,18 @@
+<customers>
+  <customer id="c1">
+    <address>a1</address>
+    <name>f1 l1</name>
+  </customer>
+  <customer id="c2">
+    <address>a2</address>
+    <name>f2 l2</name>
+  </customer>
+  <customer id="c3">
+    <address>a3</address>
+    <name>f3 l3</name>
+  </customer>
+  <customer id="c4">
+    <address>a4</address>
+    <name>f4 l4</name>
+  </customer>
+</customers>
