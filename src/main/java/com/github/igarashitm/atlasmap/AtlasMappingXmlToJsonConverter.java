@@ -3,6 +3,8 @@ package com.github.igarashitm.atlasmap;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilterOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
@@ -116,54 +118,42 @@ public class AtlasMappingXmlToJsonConverter {
 
     private Path convertMapping(Path file) {
         AtlasMapping mapping = null;
-        InputStream sourceStream = null;
-        OutputStream targetStream = null;
         try {
-            sourceStream = Files.newInputStream(file);
-            StreamSource fileSource = new StreamSource(sourceStream);
-            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-            MyValidationEventHandler handler = new MyValidationEventHandler();
-            jaxbUnmarshaller.setEventHandler(handler);
-            JAXBElement<AtlasMapping> jaxb = jaxbUnmarshaller.unmarshal(fileSource, AtlasMapping.class);
-            if (jaxb != null && jaxb.getValue() != null
-                    && jaxb.getName().equals(new QName("http://atlasmap.io/v2", "AtlasMapping"))) {
-                mapping = jaxb.getValue();
-            } else {
-                return null;
+            try (InputStream sourceStream = Files.newInputStream(file)) {
+                StreamSource fileSource = new StreamSource(sourceStream);
+                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+                MyValidationEventHandler handler = new MyValidationEventHandler();
+                jaxbUnmarshaller.setEventHandler(handler);
+                JAXBElement<AtlasMapping> jaxb = jaxbUnmarshaller.unmarshal(fileSource, AtlasMapping.class);
+                if (jaxb != null && jaxb.getValue() != null
+                        && jaxb.getName().equals(new QName("http://atlasmap.io/v2", "AtlasMapping"))) {
+                    mapping = jaxb.getValue();
+                } else {
+                    return null;
+                }
             }
+
             String fileName = file.getFileName().toString();
             Path newFile = file.getParent().resolve(fileName.substring(0, fileName.length() - 3) + "json");
-            targetStream = Files.newOutputStream(newFile);
-            Json.mapper().writeValue(targetStream, mapping);
+            try (CloseOnlyOnceOutputStream targetStream = new CloseOnlyOnceOutputStream(Files.newOutputStream(newFile))) {
+                Json.mapper().writeValue(targetStream, mapping);
+            }
             Files.delete(file);
             return newFile;
         } catch (Exception e) {
             return null;
-        } finally {
-            if (sourceStream != null) {
-                try {
-                    sourceStream.close();
-                } catch (Exception e) {}
-            }
-            if (targetStream != null) {
-                try {
-                    targetStream.close();
-                } catch (Exception e) {}
-            }
         }
     }
 
     private Path convertCatalog(Path file) {
-        InputStream sourceStream = null;
-        OutputStream targetStream = null;
         try {
-            sourceStream = Files.newInputStream(file);
-            GZIPInputStream gzis = new GZIPInputStream(sourceStream);
-            JsonNode json = objectMapper.readTree(gzis);
+            AtlasMapping mapping = null;
+            JsonNode json = null;
+            try (GZIPInputStream sourceStream = new GZIPInputStream(Files.newInputStream(file))) {
+                json = objectMapper.readTree(sourceStream);
+            }
             JsonNode exportMappingsNode = json.get("exportMappings");
             String xml = exportMappingsNode.get("value").asText();
-
-            AtlasMapping mapping = null;
             StreamSource source = new StreamSource(new StringReader(xml));
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             MyValidationEventHandler handler = new MyValidationEventHandler();
@@ -175,24 +165,15 @@ public class AtlasMappingXmlToJsonConverter {
             } else {
                 return null;
             }
+
             String converted = Json.mapper().writeValueAsString(mapping);
             ((ObjectNode) exportMappingsNode).put("value", converted);
-            targetStream = Files.newOutputStream(file, StandardOpenOption.TRUNCATE_EXISTING);
-            objectMapper.writeValue(new GZIPOutputStream(targetStream), json);
+            try (GZIPOutputStream targetStream = new GZIPOutputStream(Files.newOutputStream(file, StandardOpenOption.TRUNCATE_EXISTING))) {
+                objectMapper.writeValue(targetStream, json);
+            }
             return file;
         } catch (Exception e) {
             return null;
-        } finally {
-            if (sourceStream != null) {
-                try {
-                    sourceStream.close();
-                } catch (Exception e) {}
-            }
-            if (targetStream != null) {
-                try {
-                    targetStream.close();
-                } catch (Exception e) {}
-            }
         }
     }
 
@@ -205,6 +186,25 @@ public class AtlasMappingXmlToJsonConverter {
                     return false;
                 default:
                     return true;
+            }
+        }
+    }
+
+    /**
+     * A workaround for https://bugs.openjdk.java.net/browse/JDK-8069211
+     */
+    class CloseOnlyOnceOutputStream extends FilterOutputStream {
+        private boolean closed = false;
+
+        public CloseOnlyOnceOutputStream(OutputStream out) {
+            super(out);
+        }
+
+        @Override
+        public synchronized void close() throws IOException {
+            if (!closed) {
+                super.close();
+                closed = true;
             }
         }
     }
