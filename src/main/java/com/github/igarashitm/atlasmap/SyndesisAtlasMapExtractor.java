@@ -11,6 +11,14 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 public class SyndesisAtlasMapExtractor {
 
     public int process(Path path) throws Exception {
+        File extractDir = new File("data/extracted");
+        if (!extractDir.exists()) {
+            extractDir.mkdirs();
+        } else {
+            for (File f : extractDir.listFiles()) {
+                f.delete();
+            }
+        }
         int count = 0;
         ObjectMapper om = new ObjectMapper();
         JsonNode root = om.readTree(path.toFile());
