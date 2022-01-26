@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 public class SyndesisAtlasMapExtractor {
 
     public int process(Path path) throws Exception {
-        File extractDir = new File("data/extracted");
+        File extractDir = new File(".data/extracted");
         if (!extractDir.exists()) {
             extractDir.mkdirs();
         } else {
@@ -26,7 +26,7 @@ public class SyndesisAtlasMapExtractor {
 
         for (JsonNode am : root.findValues("atlasmapping")) {
             JsonNode mapping = om.readTree(am.asText());
-            om.writeValue(new File(String.format("data/extracted/atlasmapping-%s.json", count)), mapping);
+            om.writeValue(new File(String.format(".data/extracted/atlasmapping-%s.json", count)), mapping);
             count++;
         }
         return count;
@@ -34,7 +34,7 @@ public class SyndesisAtlasMapExtractor {
 
     public static void main(String[] args) throws Exception {
         SyndesisAtlasMapExtractor extractor = new SyndesisAtlasMapExtractor();
-        int count = extractor.process(Paths.get("data/model.json"));
+        int count = extractor.process(Paths.get(".data/model.json"));
         System.out.println(String.format("Extracted %s mappings", count));
     }
 
