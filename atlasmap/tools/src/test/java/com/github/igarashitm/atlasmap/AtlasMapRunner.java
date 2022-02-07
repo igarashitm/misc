@@ -2,18 +2,17 @@ package com.github.igarashitm.atlasmap;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
+import io.atlasmap.api.AtlasContextFactory;
 import io.atlasmap.core.DefaultAtlasContextFactory;
 import io.atlasmap.v2.AtlasMapping;
 import io.atlasmap.v2.DataSource;
 import io.atlasmap.v2.DataSourceType;
 import io.atlasmap.api.AtlasContext;
 import io.atlasmap.api.AtlasSession;
-import io.atlasmap.core.AtlasMappingService.AtlasMappingFormat;
 
 public class AtlasMapRunner {
 
@@ -24,8 +23,8 @@ public class AtlasMapRunner {
 
     @Test
     public void run() throws Exception {
-        URL mappingUrl = Thread.currentThread().getContextClassLoader().getResource(MAPPING_FILE_PATH);
-        AtlasContext context = factory.createContext(mappingUrl.toURI(), AtlasMappingFormat.JSON);
+        InputStream stream = Thread.currentThread().getContextClassLoader().getResourceAsStream(MAPPING_FILE_PATH);
+        AtlasContext context = factory.createContext(AtlasContextFactory.Format.JSON, stream);
         AtlasSession session = context.createSession();
         AtlasMapping mapping = session.getMapping();
         String sourceDocId = getDocId(mapping, DataSourceType.SOURCE);
