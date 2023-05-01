@@ -5,3 +5,7 @@
 .settings
 target
 .project
+.camel-jbang
+.vscode
+.idea
+**.iml

@@ -1,0 +1,8 @@
+- from:
+    uri: 'netty-http:http://0.0.0.0:8080/city'
+    steps:
+      - to:
+          uri: 'sql:select * from city?dataSource=#dataSource'
+      - marshal:
+          json:
+            library: 'Jackson'

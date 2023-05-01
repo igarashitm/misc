@@ -111,7 +111,8 @@
           </execution>
         </executions>
         <configuration>
-          <mainClass>com.github.igarashitm.atlasmap.AtlasMappingXmlToJsonConverter</mainClass>
+		<!-- <mainClass>com.github.igarashitm.atlasmap.AtlasMappingXmlToJsonConverter</mainClass> -->
+          <mainClass>com.github.igarashitm.atlasmap.SyndesisAtlasMapExtractor</mainClass>
         </configuration>
       </plugin>
     </plugins>
