@@ -1,0 +1,18 @@
+- beans:
+    - name: 'dataSource'
+      type: 'org.postgresql.ds.PGSimpleDataSource'
+      properties:
+        serverName: '127.0.0.1'
+        portNumber: '5432'
+        databaseName: 'dvdrental'
+        user: 'postgres'
+        password: 'pgsql'
+
+- from:
+    uri: 'netty-http:http://0.0.0.0:8080'
+    steps:
+      - to:
+          uri: 'sql:select * from actor?dataSource=#dataSource'
+      - marshal:
+          json:
+            library: 'Jackson'
