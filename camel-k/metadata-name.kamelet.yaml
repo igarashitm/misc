@@ -1,0 +1,23 @@
+apiVersion: camel.apache.org/v1alpha1
+kind: Kamelet
+metadata:
+  labels:
+    camel.apache.org/kamelet.type: source
+  name: metadata-name
+spec:
+  definition:
+    properties: {}
+    title: ''
+  dependencies:
+  - camel:core
+  - camel:timer
+  - camel:log
+  template:
+    route:
+      description: template-route-desc
+      from:
+        uri: timer:test
+        steps:
+        - to:
+            uri: kamelet:sink
+
