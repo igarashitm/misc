@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Account>
+    <FirstName>John</FirstName>
+    <LastName>Smith</LastName>
+    <Contact>
+        <Email>test@example.com</Email>
+        <Address>
+            <Street>1st Street</Street>
+            <City>New York</City>
+            <State>NY</State>
+            <Zip>10021</Zip>
+        </Address>
+    </Contact>
+</Account>

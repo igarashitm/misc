@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Second>
+    <Apple>
+        <UnitPrice>3.00</UnitPrice>
+    </Apple>
+    <Orange>
+        <UnitPrice>2.00</UnitPrice>
+    </Orange>
+</Second>

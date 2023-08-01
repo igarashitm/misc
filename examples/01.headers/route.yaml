@@ -1,0 +1,73 @@
+# camel-k: language=yaml
+
+# Service sub routes
+- from:
+    uri: "direct:step1"
+    steps:
+      - set-header:
+          name: "step1-header1"
+          simple: "Header 1 from step1 service"
+      - set-header:
+          name: "global-header1"
+          simple: "Global header 1 from step1 service"
+      - log:
+          message: "step1(source):\n${headers}"
+- from:
+    uri: "direct:step2"
+    steps:
+      - set-header:
+          name: "step2-header1"
+          simple: "Header 1 from step2 service"
+      - set-header:
+          name: "global-header1"
+          simple: "Global header 1 from step2 service"
+      - log:
+          message: "step2(source):\n${headers}"
+- from:
+    uri: "direct:step3"
+    steps:
+      - log:
+          message: "endStep(target):\n${headers}"
+
+# Main route
+- from:
+    uri: "timer:yaml"
+    parameters:
+      period: "3000"
+    steps:
+      - step:
+          id: "step1-wrapped-for-datamapper"
+          steps:
+            - to:
+                uri: "direct:step1"
+            # Capture headers from step1 and save into exchange properties
+            - set-property:
+                name: "datamapper-step1-header-step1-header1"
+                simple: "${header[step1-header1]}"
+            - set-property:
+                name: "datamapper-step1-header-global-header1"
+                simple: "${header[global-header1]}"
+      - step:
+          id: "step2-wrapped-for-datamapper"
+          steps:
+            - to:
+                uri: "direct:step2"
+            # Capture headers from step2 and save into exchange properties
+            - set-property:
+                name: "datamapper-step2-header-step2-header1"
+                simple: "${header[step2-header1]}"
+            - set-property:
+                name: "datamapper-step2-header-global-header1"
+                simple: "${header[global-header1]}"
+      - step:
+          id: "datamapper-1"
+          steps:
+            - set-property:
+                name: "datamapper-step3-header-global-header1"
+                simple: "${header[global-header1]}"
+            - to:
+                uri: "xslt-saxon:mapping.xsl"
+                parameters:
+                  failOnNullBody: "false"
+      - to:
+          uri: "direct:step3"
