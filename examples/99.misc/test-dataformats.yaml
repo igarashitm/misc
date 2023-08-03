@@ -1,0 +1,14 @@
+- from:
+    uri: "timer:test"
+    parameters:
+      period: 3000
+    steps:
+    - set-body:
+        simple: "Hello World"
+    - marshal:
+        json:
+          library: Jackson
+        jaxb:
+          contextPath: org.apache.camel.model
+    - to:
+        uri: "log:test"

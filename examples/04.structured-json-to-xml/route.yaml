@@ -5,22 +5,11 @@
     uri: "direct:step1"
     steps:
       - set-body:
-          simple: "resource:classpath:source1.xml"
-      - convert-body-to:
-          type: "org.w3c.dom.Document"
+          simple: "resource:classpath:source.json"
       - log:
           message: "step1(source):\n${body}"
 - from:
-    uri: "direct:step2"
-    steps:
-      - set-body:
-          simple: "resource:classpath:source2.xml"
-      - convert-body-to:
-          type: "org.w3c.dom.Document"
-      - log:
-          message: "step2(source):\n${body}"
-- from:
-    uri: "direct:step3"
+    uri: "direct:endStep"
     steps:
       - log:
           message: "endStep(target):\n${body}"
@@ -41,20 +30,12 @@
                 name: "datamapper-step1-body"
                 simple: "${body}"
       - step:
-          id: "step2-wrapped-for-datamapper"
-          steps:
-            - to:
-                uri: "direct:step2"
-            # Capture body from step1 and save into exchange properties
-            - set-property:
-                name: "datamapper-step2-body"
-                simple: "${body}"
-      - step:
           id: "datamapper-1"
           steps:
             - to:
-                uri: "xslt-saxon:mapping.xsl"
+                uri: "xj:mapping.xsl"
                 parameters:
                   failOnNullBody: "false"
+                  transformDirection: "json2xml"
       - to:
-          uri: "direct:step3"
+          uri: "direct:endStep"

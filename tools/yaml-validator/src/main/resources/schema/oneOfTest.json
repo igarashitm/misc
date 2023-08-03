@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "additionalProperties" : false,
+  "oneOf": [
+    {
+      "type": "object",
+      "additionalProperties" : false,
+      "properties": {
+        "def1p1": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "additionalProperties" : false,
+      "properties": {
+        "def2p1": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "properties": {
+    "p1": {
+      "type": "object",
+      "additionalProperties" : false,
+      "properties": {
+        "p1p1": {
+          "type": "string"
+        }
+      }
+    },
+    "p2": {
+      "type": "object",
+      "additionalProperties" : false,
+      "properties": {
+        "p2p1": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

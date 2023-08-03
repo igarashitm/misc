@@ -1,0 +1,9 @@
+- from:
+    uri: timer:tick
+    steps:
+    - choice:
+        when:
+        - simple: "${body} contains 'foo'"
+          jq: ".foo"
+          steps:
+          - to: log:info

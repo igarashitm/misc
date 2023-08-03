@@ -5,7 +5,7 @@
     uri: "direct:step1"
     steps:
       - set-body:
-          simple: "resource:classpath:first.xml"
+          simple: "resource:classpath:source.xml"
       - convert-body-to:
           type: "org.w3c.dom.Document"
       - log:
