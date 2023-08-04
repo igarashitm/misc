@@ -48,7 +48,7 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>io.kaoto.research.datamapper.tools.CamelYamlValidator</mainClass>
+                    <mainClass>io.kaoto.research.datamapper.tools.JsonSchemaYamlValidator</mainClass>
                 </configuration>
             </plugin>
             <plugin>

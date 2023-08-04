@@ -1,45 +1,55 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "array",
-  "additionalProperties" : false,
-  "oneOf": [
-    {
-      "type": "object",
-      "additionalProperties" : false,
-      "properties": {
-        "def1p1": {
-          "type": "string"
-        }
+  "items": {
+    "maxProperties": 1,
+    "properties": {
+      "when": {
+        "$ref": "#/items/definitions/org.apache.camel.model.WhenDefinition"
       }
     },
-    {
-      "type": "object",
-      "additionalProperties" : false,
-      "properties": {
-        "def2p1": {
-          "type": "string"
+    "definitions" : {
+      "org.apache.camel.model.WhenDefinition" : {
+        "type" : "object",
+        "oneOf" : [ {
+          "$ref" : "#/items/definitions/org.apache.camel.model.language.ExpressionDefinition"
+        } ],
+        "properties" : {
+          "description" : {
+            "type" : "string"
+          },
+          "disabled" : {
+            "type" : "boolean"
+          },
+          "expression" : {
+            "$ref" : "#/items/definitions/org.apache.camel.model.language.ExpressionDefinition"
+          },
+          "id" : {
+            "type" : "string"
+          },
+          "inherit-error-handler" : {
+            "type" : "boolean"
+          },
+          "steps" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/items/definitions/org.apache.camel.model.ProcessorDefinition"
+            }
+          }
         }
-      }
-    }
-  ],
-  "properties": {
-    "p1": {
-      "type": "object",
-      "additionalProperties" : false,
-      "properties": {
-        "p1p1": {
-          "type": "string"
+      },
+        "org.apache.camel.model.language.ExpressionDefinition" : {
+            "type" : "object",
+            "additionalProperties": false,
+            "properties" : {
+              "constant": {
+                "type": "string"
+              },
+              "simple": {
+                "type": "string"
+              }
+            }
         }
-      }
-    },
-    "p2": {
-      "type": "object",
-      "additionalProperties" : false,
-      "properties": {
-        "p2p1": {
-          "type": "string"
-        }
-      }
     }
   }
 }

@@ -1,6 +1,4 @@
-parent:
-  def1p1: foo
-p1:
-  p1p1: baz
-p2:
-  p2p1: qux
+- when:
+    simple: aaa
+    constant: bbb
+    description: aaa

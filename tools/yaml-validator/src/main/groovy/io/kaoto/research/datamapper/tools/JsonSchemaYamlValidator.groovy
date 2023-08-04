@@ -8,36 +8,38 @@ import com.github.fge.jsonschema.main.JsonSchemaFactory
 import com.github.fge.jsonschema.core.report.ProcessingReport
 
 @Slf4j
-class CamelYamlValidator {
+class JsonSchemaYamlValidator {
     static def MAPPER = new ObjectMapper(new YAMLFactory())
-    //static def SCHEMA_RES = JsonLoader.fromResource('/schema/camel-yaml-dsl.json')
-    //static def SCHEMA_RES = JsonLoader.fromResource('/schema/camel-yaml-dsl-additionalProperties-false.json')
-    static def SCHEMA_RES = JsonLoader.fromResource('/schema/oneOfTest.json')
-    static def SCHEMA = JsonSchemaFactory.byDefault().getJsonSchema(SCHEMA_RES)
 
-    def process() {
+    def process(String schemaFileName, String suffixFilter) {
+        def schemaRes = JsonLoader.fromResource(schemaFileName)
+        def schema = JsonSchemaFactory.byDefault().getJsonSchema(schemaRes)
         def reports = new ArrayList<ProcessingReport>()
         def yamlDir = new File(getClass().getResource("/yaml").toURI())
         def filter = new FilenameFilter() {
             @Override
             boolean accept(File dir, String name) {
-                return name.toLowerCase().endsWith("test.yaml")
+                return name.toLowerCase().endsWith(suffixFilter)
             }
         }
         yamlDir.listFiles(filter).each { yaml ->
             println(">>>>> " + yaml.name)
             def target = MAPPER.readTree(yaml)
-            def report = SCHEMA.validate(target);
+            def report = schema.validate(target);
             if (!report.isSuccess()) {
                 reports.add(report)
             }
         }
-        if (reports.size() > 0) {
-            throw new IllegalArgumentException("${reports}")
-        }
+        return reports;
     }
 
     static void main(String[] args) {
-        new CamelYamlValidator().process();
+        def reports =
+                new JsonSchemaYamlValidator().process(args[0], args[1]);
+        if (reports.size() > 0) {
+            throw new IllegalArgumentException("${reports}")
+        } else {
+            println(">>>>> All YAML files are valid.")
+        }
     }
 }
