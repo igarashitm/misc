@@ -1,0 +1,4 @@
+- when:
+    simple: aaa
+    constant: bbb
+    description: aaa

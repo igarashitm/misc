@@ -1,0 +1,9 @@
+- from:
+    uri: timer:tick
+    steps:
+    - to: log:info
+    - marshal:
+        json:
+          library: Jackson
+        jaxb:
+          context-path: org.apache.camel.model
