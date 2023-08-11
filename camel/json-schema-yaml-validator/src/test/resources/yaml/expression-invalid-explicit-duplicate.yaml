@@ -1,0 +1,5 @@
+- when:
+      expression:
+        simple: aaa
+        constant: bbb
+      description: aaa

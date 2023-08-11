@@ -1,0 +1,25 @@
+- when:
+    constant: aaa
+    description: aaa
+- when:
+    simple: bbb
+    description: bbb
+- when:
+    expression:
+      constant: aaa
+    description: aaa
+- when:
+    expression:
+      simple: bbb
+    description: bbb
+- when:
+    expression:
+      simple:
+        expression: bbb
+    description: bbb
+- when:
+    simple:
+      expression: bbb
+    description: bbb
+- when:
+    description: noexpression

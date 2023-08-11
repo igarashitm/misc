@@ -1,0 +1,116 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "items": {
+    "maxProperties": 1,
+    "properties": {
+      "when": {
+        "$ref": "#/items/definitions/org.apache.camel.model.WhenDefinition"
+      }
+    },
+    "definitions" : {
+      "org.apache.camel.model.WhenDefinition" : {
+        "type" : "object",
+        "additionalProperties" : false,
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "expression"
+            ],
+            "properties": {
+              "expression": {
+                "$ref": "#/items/definitions/org.apache.camel.model.language.ExpressionDefinition"
+              }
+            }
+          },
+          {
+            "$ref": "#/items/definitions/org.apache.camel.model.language.ExpressionDefinition"
+          },
+          {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "expression"
+                  ]
+                },
+                {
+                  "required": [
+                    "simple"
+                  ]
+                },
+                {
+                  "required": [
+                    "constant"
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "expression": {},
+          "simple": {},
+          "constant": {}
+        }
+      },
+      "org.apache.camel.model.language.ExpressionDefinition" : {
+        "type" : "object",
+        "oneOf" : [
+          {
+            "type" : "object",
+            "required" : [ "constant" ],
+            "properties" : {
+              "constant": {
+                "$ref": "#/items/definitions/org.apache.camel.model.language.ConstantExpression"
+              }
+            }
+          },
+          {
+            "type" : "object",
+            "required" : [ "simple" ],
+            "properties" : {
+              "simple": {
+                "$ref": "#/items/definitions/org.apache.camel.model.language.SimpleExpression"
+              }
+            }
+          }
+        ]
+      },
+      "org.apache.camel.model.language.ConstantExpression" : {
+        "oneOf" : [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "expression": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      },
+      "org.apache.camel.model.language.SimpleExpression" : {
+        "oneOf" : [
+          {
+            "type": "string"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "expression": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

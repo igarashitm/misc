@@ -1,7 +1,17 @@
+# yaml-language-server: $schema=../schema/camel-yaml-dsl.json
 - from:
     uri: timer:tick
     steps:
     - to: log:info
+    - choice:
+        when:
+        - simple: 'aaa'
+          expression: 'eee'
+          steps: []
+        - simple: 'bbb'
+          steps: []
+        otherwise:
+          steps: []
     - marshal:
         json:
           library: Jackson

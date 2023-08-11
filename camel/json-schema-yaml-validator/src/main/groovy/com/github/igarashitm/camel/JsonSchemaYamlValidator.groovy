@@ -3,12 +3,11 @@ package com.github.igarashitm.camel
 import groovy.util.logging.Slf4j
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.github.fge.jackson.JsonLoader;
-import com.github.fge.jsonschema.main.JsonSchemaFactory
-import com.github.fge.jsonschema.core.report.ProcessingReport
+import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SpecVersionDetector
+import com.networknt.schema.ValidationMessage
 
 import java.lang.management.ManagementFactory
-import java.util.stream.Collector
 import java.util.stream.Collectors
 
 @Slf4j
@@ -16,9 +15,10 @@ class JsonSchemaYamlValidator {
     static def MAPPER = new ObjectMapper(new YAMLFactory())
 
     def process(String schemaFileName, String dirName, String filter) {
-        def schemaRes = JsonLoader.fromResource(schemaFileName)
-        def schema = JsonSchemaFactory.byDefault().getJsonSchema(schemaRes)
-        def reports = new ArrayList<ProcessingReport>()
+        def schemaRes = MAPPER.readTree(this.getClass().getResourceAsStream(schemaFileName));
+        def factory = JsonSchemaFactory.getInstance(SpecVersionDetector.detect(schemaRes));
+        def schema = factory.getSchema(schemaRes);
+        def reports = new ArrayList<ValidationMessage>()
         def yamlDir = new File(getClass().getResource(dirName).toURI())
         def fnFilter = new FilenameFilter() {
             @Override
@@ -31,8 +31,8 @@ class JsonSchemaYamlValidator {
             println(">>>>> " + yaml.name)
             def target = MAPPER.readTree(yaml)
             def report = schema.validate(target);
-            if (!report.isSuccess()) {
-                reports.add(report)
+            if (!report.isEmpty()) {
+                reports.addAll(report)
             }
         }
 
