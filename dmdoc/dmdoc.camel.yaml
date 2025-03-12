@@ -1,0 +1,48 @@
+- route:
+    id: route-1865
+    from:
+      uri: timer:yaml
+      parameters:
+        period: "1000"
+      steps:
+        - to:
+            id: to-2425
+            description: Get Account
+            uri: https
+            parameters:
+              httpUri: getaccount.domain
+        - setVariable:
+            id: setVariable-3292
+            expression:
+              simple: {}
+            name: account
+        - to:
+            id: to-8298
+            description: Get Order Sequence
+            uri: https
+            parameters:
+              httpUri: getordersequence.domain
+        - setVariable:
+            id: setVariable-3056
+            expression:
+              simple: {}
+            name: orderSequence
+        - to:
+            id: to-2051
+            description: Get Cart
+            uri: https
+            parameters:
+              httpUri: getcart.domain
+        - step:
+            id: kaoto-datamapper-c891df91
+            steps:
+              - to:
+                  id: kaoto-datamapper-xslt-1771
+                  uri: xslt-saxon:kaoto-datamapper-c891df91.xsl
+                  parameters: {}
+        - to:
+            id: to-1788
+            description: Post Ship Order
+            uri: https
+            parameters:
+              httpUri: postshiporder.domain

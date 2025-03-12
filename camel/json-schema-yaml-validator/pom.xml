@@ -15,6 +15,7 @@
         <version.gmaven>3.0.0</version.gmaven>
         <version.groovy>4.0.13</version.groovy>
         <version.jackson>2.15.2</version.jackson>
+        <version.json-generator>1.0.4</version.json-generator>
         <version.json-schema-validator>1.0.86</version.json-schema-validator>
         <version.junit>5.10.0</version.junit>
         <version.log4j>2.20.0</version.log4j>
@@ -57,6 +58,26 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-jcl</artifactId>
             <version>${version.log4j}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.apptik.json</groupId>
+            <artifactId>json-core</artifactId>
+            <version>${version.json-generator}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.apptik.json</groupId>
+            <artifactId>json-generator</artifactId>
+            <version>${version.json-generator}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.apptik.json</groupId>
+            <artifactId>json-schema</artifactId>
+            <version>${version.json-generator}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.apptik.json</groupId>
+            <artifactId>json-wrapper</artifactId>
+            <version>${version.json-generator}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.groovy</groupId>

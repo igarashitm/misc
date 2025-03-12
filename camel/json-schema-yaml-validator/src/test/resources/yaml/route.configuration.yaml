@@ -1,0 +1,10 @@
+- routeConfiguration:
+    onException:
+      - handled:
+          constant: "true"
+        exception:
+          - ${MyException.name}
+        steps:
+          - transform:
+              constant: "Sorry"
+          - to: "mock:on-exception"

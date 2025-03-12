@@ -1,0 +1,14 @@
+{
+	"kaoto-datamapper-c891df91": {
+		"sourceBody": {
+			"type": "Primitive",
+			"filePath": []
+		},
+		"sourceParameters": {},
+		"targetBody": {
+			"type": "Primitive",
+			"filePath": []
+		},
+		"xsltPath": "kaoto-datamapper-c891df91.xsl"
+	}
+}
