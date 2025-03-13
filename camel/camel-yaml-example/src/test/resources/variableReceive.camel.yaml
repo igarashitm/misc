@@ -1,0 +1,16 @@
+- from:
+    uri: direct:start
+    steps:
+      - setBody:
+          constant: start
+      - to:
+          uri: direct:second
+          variableReceive: myvar
+      - log: ${variable.myvar}
+      - log: ${body}
+
+- from:
+    uri: direct:second
+    steps:
+        - setBody:
+            constant: second
